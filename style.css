@@ -48,9 +48,6 @@ body
   -webkit-border-radius: 1%;
   border-radius:         1%;
   -khtml-border-radius:  1%;
-
-  /* Creates new stacking context for gameplay */
-  z-index: -1;
 }
 
 .row
