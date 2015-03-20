@@ -31,14 +31,20 @@ body
 
   margin: -250px 0 0 -250px;
 
+  /* Rounds all corners */
+  -moz-border-radius:    1%;
+  -webkit-border-radius: 1%;
+  border-radius:         1%;
+  -khtml-border-radius:  1%;
+
   background-color: #FFF;
 }
 
 .row
 {
-  width:  100%;
-  height: 9%;
-  margin: 0.92% 0;
+  width:   99%;
+  height:  8.91%;
+  margin:  0.99% 0.54%;
   padding: 0;
 }
 
@@ -48,6 +54,12 @@ body
   height:  100%;
   margin:  0 0.5%;
   padding: 0;
+
+  /* Rounds all corners */
+  -moz-border-radius:    10%;
+  -webkit-border-radius: 10%;
+  border-radius:         10%;
+  -khtml-border-radius:  10%;
 
   display: inline-block;
 }
