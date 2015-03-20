@@ -1,6 +1,6 @@
 var GAMEPLAY_WIDTH = 10,
     GAMEPLAY_HEIGHT = 10,
-    COLOR_DIFFERENCE = 10;
+    COLOR_DIFFERENCE = 25;
 
 function getRGB(red, green, blue) {
   return 'rgb(' + [red, green, blue].join(',') + ')';
@@ -48,9 +48,9 @@ function setupGrid() {
 }
 
 function setupColor() {
-  var randomRed   = Math.floor(Math.random() * 256),
-      randomGreen = Math.floor(Math.random() * 256),
-      randomBlue  = Math.floor(Math.random() * 256),
+  var randomRed   = Math.floor(Math.random() * (256 - COLOR_DIFFERENCE)),
+      randomGreen = Math.floor(Math.random() * (256 - COLOR_DIFFERENCE)),
+      randomBlue  = Math.floor(Math.random() * (256 - COLOR_DIFFERENCE)),
       rgb = [randomRed, randomGreen, randomBlue];
   var randomColor = getRGB(rgb[0], rgb[1], rgb[2]);
 
@@ -74,9 +74,10 @@ function setupUniqueCell() {
   }
 
   // Creates new color for unique cell
-  var rgb   = parsePrimaryColor(color),
-      color = Math.floor(Math.random() * rgb.length);
-  rgb[color] += COLOR_DIFFERENCE;
+  var rgb   = parsePrimaryColor(color);
+  rgb[0] = parseInt(rgb[0]) + COLOR_DIFFERENCE;
+  rgb[1] = parseInt(rgb[1]) + COLOR_DIFFERENCE;
+  rgb[2] = parseInt(rgb[2]) + COLOR_DIFFERENCE;
   randomColor = getRGB(rgb[0], rgb[1], rgb[2]);
 
   cells[index].style.backgroundColor = randomColor;
