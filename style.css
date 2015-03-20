@@ -3,6 +3,8 @@ h1
 {
   padding: 0;
   margin:  0;
+
+  font-family: Arial;
 }
 
 /* universal */
@@ -126,4 +128,10 @@ body
 #play-button:hover
 {
   background-color: #5BB12F;
+}
+
+/* utilities */
+.hidden
+{
+  display: none;
 }

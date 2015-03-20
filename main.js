@@ -107,7 +107,15 @@ function setupGameplay() {
   setupUniqueCell(colorOffset);
 }
 
+function setupEntrance() {
+  document.getElementById("play-button").addEventListener("click", function() {
+    var entrance = document.getElementById("entrance");
+    entrance.className += " hidden";
+  });
+}
+
 function main() {
+  setupEntrance();
   setupGameplay();
 }
 
