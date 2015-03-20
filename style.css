@@ -127,6 +127,43 @@ body
   background-color: #5BB12F;
 }
 
+/* sidebar */
+.sidebar
+{
+  width:   10%;
+  height:  100%;
+  padding: 0;
+  margin:  0;
+
+  background-color: #000;
+  float: left;
+}
+
+/* score */
+#score-box
+{
+  width:   90%;
+  height:  10%;
+  padding: 0;
+  margin:  1% auto;
+
+  /* Rounds all corners */
+  -moz-border-radius: 3%;
+  -webkit-border-radius: 3%;
+  border-radius: 3%;
+  -khtml-border-radius: 3%;
+
+  background-color: #FFF;
+}
+
+#score
+{
+  padding: 7% 0;
+  font-size: 2em;
+  text-align: center;
+  vertical-align: middle;
+}
+
 /* utilities */
 .hidden
 {
