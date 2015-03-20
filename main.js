@@ -1,6 +1,16 @@
 var GAMEPLAY_WIDTH = 10,
     GAMEPLAY_HEIGHT = 10,
-    COLOR_DIFFERENCE = 25;
+    COLOR_DIFFERENCE = 100;
+
+var config = {
+  time: 60,
+  difficulty: [1, 2, 3, 4, 5]
+};
+
+function generateColorDifference() {
+  var levelOfDifficulty = Math.floor(Math.random() * config.difficulty.length);
+  return COLOR_DIFFERENCE / config.difficulty[levelOfDifficulty];
+}
 
 function getRGB(red, green, blue) {
   return 'rgb(' + [red, green, blue].join(',') + ')';
@@ -47,10 +57,10 @@ function setupGrid() {
   }
 }
 
-function setupColor() {
-  var randomRed   = Math.floor(Math.random() * (256 - COLOR_DIFFERENCE)),
-      randomGreen = Math.floor(Math.random() * (256 - COLOR_DIFFERENCE)),
-      randomBlue  = Math.floor(Math.random() * (256 - COLOR_DIFFERENCE)),
+function setupColor(colorOffset) {
+  var randomRed   = Math.floor(Math.random() * (256 - colorOffset)),
+      randomGreen = Math.floor(Math.random() * (256 - colorOffset)),
+      randomBlue  = Math.floor(Math.random() * (256 - colorOffset)),
       rgb = [randomRed, randomGreen, randomBlue];
   var randomColor = getRGB(rgb[0], rgb[1], rgb[2]);
 
@@ -61,7 +71,7 @@ function setupColor() {
   }
 }
 
-function setupUniqueCell() {
+function setupUniqueCell(colorOffset) {
   var cells = document.getElementsByClassName("cell"),
       index = Math.floor(Math.random() * cells.length),
       color = cells[index].style.backgroundColor;
@@ -70,14 +80,17 @@ function setupUniqueCell() {
     var startIndex = rgb.indexOf('(') + 1,
         endIndex   = rgb.indexOf(')');
     var colorList  = rgb.substring(startIndex, endIndex);
-    return colorList.split(',');
+
+    return colorList.split(',').map(function(value) {
+      return parseInt(value);
+    });
   }
 
   // Creates new color for unique cell
-  var rgb   = parsePrimaryColor(color);
-  rgb[0] = parseInt(rgb[0]) + COLOR_DIFFERENCE;
-  rgb[1] = parseInt(rgb[1]) + COLOR_DIFFERENCE;
-  rgb[2] = parseInt(rgb[2]) + COLOR_DIFFERENCE;
+  var rgb = parsePrimaryColor(color);
+  rgb[0] += colorOffset;
+  rgb[1] += colorOffset;
+  rgb[2] += colorOffset;
   randomColor = getRGB(rgb[0], rgb[1], rgb[2]);
 
   cells[index].style.backgroundColor = randomColor;
@@ -87,9 +100,11 @@ function setupUniqueCell() {
 }
 
 function setupGameplay() {
+  var colorOffset = generateColorDifference();
+
   setupGrid();
-  setupColor();
-  setupUniqueCell();
+  setupColor(colorOffset);
+  setupUniqueCell(colorOffset);
 }
 
 function main() {
