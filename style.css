@@ -1,0 +1,53 @@
+html
+{
+  width:   100%;
+  height:  100%;
+  margin:  0;
+  padding: 0;
+}
+
+body
+{
+  position: relative;
+
+  width:   100%;
+  height:  100%;
+  margin:  0;
+  padding: 0;
+
+  background-color: #DE593A;
+}
+
+#gameplay
+{
+  width:   500px;
+  height:  500px;
+  margin:  0;
+  padding: 0;
+
+  position: absolute;
+  top:  50%;
+  left: 50%;
+
+  margin: -250px 0 0 -250px;
+
+  background-color: #FFF;
+}
+
+.row
+{
+  width:  100%;
+  height: 9%;
+  margin: 0.92% 0;
+  padding: 0;
+}
+
+.cell
+{
+  width:   9%;
+  height:  100%;
+  margin:  0 0.5%;
+  padding: 0;
+
+  display: inline-block;
+}
