@@ -4,8 +4,19 @@ var GAMEPLAY_WIDTH = 10,
 
 var config = {
   time: 60,
-  difficulty: [1, 2, 3, 4, 5]
+  score: 0,
+  difficulty: [1, 2, 3, 4, 5, 6, 7]
 };
+
+function setScore(score) {
+  config.score = score;
+  document.getElementById("score").innerHTML = score;
+}
+
+function incrementScore() {
+  config.score = config.score + 1;
+  setScore(config.score);
+}
 
 function generateColorDifference() {
   var levelOfDifficulty = Math.floor(Math.random() * config.difficulty.length);
@@ -96,6 +107,7 @@ function setupUniqueCell(colorOffset) {
   cells[index].style.backgroundColor = randomColor;
   cells[index].addEventListener("click", function() {
     setupGameplay();
+    incrementScore();
   });
 }
 
