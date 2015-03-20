@@ -88,11 +88,11 @@ function setupUniqueCell(colorOffset) {
 
   // Creates new color for unique cell
   var rgb = parsePrimaryColor(color);
-  rgb[0] += colorOffset;
-  rgb[1] += colorOffset;
-  rgb[2] += colorOffset;
+  rgb[0] = Math.floor(rgb[0] + colorOffset);
+  rgb[1] = Math.floor(rgb[1] + colorOffset);
+  rgb[2] = Math.floor(rgb[2] + colorOffset);
   randomColor = getRGB(rgb[0], rgb[1], rgb[2]);
-
+  
   cells[index].style.backgroundColor = randomColor;
   cells[index].addEventListener("click", function() {
     setupGameplay();
