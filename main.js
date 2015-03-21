@@ -1,21 +1,73 @@
-var GAMEPLAY_WIDTH = 10,
-    GAMEPLAY_HEIGHT = 10,
-    COLOR_DIFFERENCE = 100;
+var GAMEPLAY_WIDTH   = 10,
+    GAMEPLAY_HEIGHT  = 10,
+    COLOR_DIFFERENCE = 100,
+    GAME_TOTAL_TIME  = 60;
 
 var config = {
-  time: 60,
-  difficulty: [1, 2, 3, 4, 5]
+  time: GAME_TOTAL_TIME,
+  score: 0,
+  difficulty: [1, 2, 3, 4, 5, 6, 7]
 };
 
+var values = {
+  rowClass: "row",
+  cellClass: "cell",
+  timeId: "time",
+  scoreId: "score",
+  gameplayId: "gameplay",
+  entranceId: "entrance",
+  playButtonId: "play-button",
+  scoreboardId: "scoreboard",
+  finalScoreId: "final-score",
+  hiddenClass: "hidden",
+  replayButtonId: "replay-button",
+  scoreLabel: "Score: ",
+}
+
+var timeCounter = null;
+
+
+/* ---------------
+ * Utility methods
+ * ---------------
+ */
+function random(number) {
+  return Math.floor(Math.random() * number);
+}
+
+/* --------------------------
+ * Score manipulation methods
+ * --------------------------
+ */
+function setScore(score) {
+  config.score = score;
+  document.getElementById(values.scoreId).innerHTML = score;
+}
+
+function incrementScore() {
+  config.score = config.score + 1;
+  setScore(config.score);
+}
+
+
+/* ----------------------------
+ * Color manipulation functions
+ * ----------------------------
+ */
 function generateColorDifference() {
-  var levelOfDifficulty = Math.floor(Math.random() * config.difficulty.length);
-  return COLOR_DIFFERENCE / config.difficulty[levelOfDifficulty];
+  var difficultyLevel = random(config.difficulty.length);
+  return COLOR_DIFFERENCE / config.difficulty[difficultyLevel];
 }
 
 function getRGB(red, green, blue) {
   return 'rgb(' + [red, green, blue].join(',') + ')';
 }
 
+
+/* ------------------------
+ * DOM manipulation methods
+ * ------------------------
+ */
 function removeAllChildren(elementId) {
   while (true) {
     var element = document.getElementById(elementId);
@@ -44,23 +96,23 @@ function setupGrid() {
     }
   }
 
-  removeAllChildren("gameplay");
+  removeAllChildren(values.gameplayId);
 
   // Adds rows
   for (var i = 0; i < GAMEPLAY_HEIGHT; i++) {
-    createElementWithParentId("gameplay", "div", "row");
+    createElementWithParentId(values.gameplayId, "div", values.rowClass);
   }
 
   // Adds cells
   for (var i = 0; i < GAMEPLAY_WIDTH; i++) {
-    createElementWithParentClass("row", "div", "cell");
+    createElementWithParentClass(values.rowClass, "div", values.cellClass);
   }
 }
 
-function setupColor(colorOffset) {
-  var randomRed   = Math.floor(Math.random() * (256 - colorOffset)),
-      randomGreen = Math.floor(Math.random() * (256 - colorOffset)),
-      randomBlue  = Math.floor(Math.random() * (256 - colorOffset)),
+function setupCellColor(colorOffset) {
+  var randomRed   = random(256 - colorOffset),
+      randomGreen = random(256 - colorOffset),
+      randomBlue  = random(256 - colorOffset),
       rgb = [randomRed, randomGreen, randomBlue];
   var randomColor = getRGB(rgb[0], rgb[1], rgb[2]);
 
@@ -72,16 +124,15 @@ function setupColor(colorOffset) {
 }
 
 function setupUniqueCell(colorOffset) {
-  var cells = document.getElementsByClassName("cell"),
-      index = Math.floor(Math.random() * cells.length),
+  var cells = document.getElementsByClassName(values.cellClass),
+      index = random(cells.length),
       color = cells[index].style.backgroundColor;
 
   function parsePrimaryColor(rgb) {
     var startIndex = rgb.indexOf('(') + 1,
         endIndex   = rgb.indexOf(')');
-    var colorList  = rgb.substring(startIndex, endIndex);
-
-    return colorList.split(',').map(function(value) {
+    var rgbValues  = rgb.substring(startIndex, endIndex);
+    return rgbValues.split(',').map(function(value) {
       return parseInt(value);
     });
   }
@@ -93,9 +144,11 @@ function setupUniqueCell(colorOffset) {
   rgb[2] = Math.floor(rgb[2] + colorOffset);
   randomColor = getRGB(rgb[0], rgb[1], rgb[2]);
   
+  // Sets new color and event listener for the random cell
   cells[index].style.backgroundColor = randomColor;
   cells[index].addEventListener("click", function() {
     setupGameplay();
+    incrementScore();
   });
 }
 
@@ -103,20 +156,56 @@ function setupGameplay() {
   var colorOffset = generateColorDifference();
 
   setupGrid();
-  setupColor(colorOffset);
+  setupCellColor(colorOffset);
   setupUniqueCell(colorOffset);
 }
 
 function setupEntrance() {
-  document.getElementById("play-button").addEventListener("click", function() {
-    var entrance = document.getElementById("entrance");
+  var playButton = document.getElementById(values.playButtonId);
+  playButton.addEventListener("click", function() {
+    var entrance = document.getElementById(values.entranceId);
     entrance.className += " hidden";
+    setupTimeCounter();
   });
 }
 
 function main() {
   setupEntrance();
   setupGameplay();
+}
+
+/* --------------------------------
+ * Time counter running in parallel
+ * --------------------------------
+ */
+function showScoreboard() {
+
+  function resetConfig() {
+    config.time  = 60;
+    config.score = 0;
+  }
+
+  document.getElementById(values.scoreboardId).className = "";
+  document.getElementById(values.finalScoreId).innerHTML = values.scoreLabel + config.score;
+  document.getElementById(values.scoreId).innerHTML = "0";
+  document.getElementById(values.replayButtonId).addEventListener("click", function() {
+    scoreboard.className = values.hiddenClass;
+
+    resetConfig();
+    setupGameplay();
+  });
+}
+
+function setupTimeCounter() {
+  timeCounter = setTimeout(function() {
+    config.time = config.time - 1;
+    if (config.time === 0) {
+      showScoreboard();
+      clearTimeout(timeCounter);
+    }
+    document.getElementById(values.timeId).innerHTML = config.time;
+    setupTimeCounter();
+  }, 1000);
 }
 
 main();
