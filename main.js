@@ -1,5 +1,5 @@
-var GAMEPLAY_WIDTH = 10,
-    GAMEPLAY_HEIGHT = 10,
+var GAMEPLAY_WIDTH   = 10,
+    GAMEPLAY_HEIGHT  = 10,
     COLOR_DIFFERENCE = 100;
 
 var config = {
@@ -8,9 +8,18 @@ var config = {
   difficulty: [1, 2, 3, 4, 5, 6, 7]
 };
 
-/* -------------------------
- * Score manipulation method
- * -------------------------
+/* ---------------
+ * Utility methods
+ * ---------------
+ */
+function random(number) {
+  return Math.floor(Math.random() * number);
+}
+
+
+/* --------------------------
+ * Score manipulation methods
+ * --------------------------
  */
 function setScore(score) {
   config.score = score;
@@ -28,13 +37,14 @@ function incrementScore() {
  * ----------------------------
  */
 function generateColorDifference() {
-  var levelOfDifficulty = Math.floor(Math.random() * config.difficulty.length);
-  return COLOR_DIFFERENCE / config.difficulty[levelOfDifficulty];
+  var difficultyLevel = random(config.difficulty.length);
+  return COLOR_DIFFERENCE / config.difficulty[difficultyLevel];
 }
 
 function getRGB(red, green, blue) {
   return 'rgb(' + [red, green, blue].join(',') + ')';
 }
+
 
 /* ------------------------
  * DOM manipulation methods
@@ -81,10 +91,10 @@ function setupGrid() {
   }
 }
 
-function setupColor(colorOffset) {
-  var randomRed   = Math.floor(Math.random() * (256 - colorOffset)),
-      randomGreen = Math.floor(Math.random() * (256 - colorOffset)),
-      randomBlue  = Math.floor(Math.random() * (256 - colorOffset)),
+function setupCellColor(colorOffset) {
+  var randomRed   = random(256 - colorOffset),
+      randomGreen = random(256 - colorOffset),
+      randomBlue  = random(256 - colorOffset),
       rgb = [randomRed, randomGreen, randomBlue];
   var randomColor = getRGB(rgb[0], rgb[1], rgb[2]);
 
@@ -97,15 +107,14 @@ function setupColor(colorOffset) {
 
 function setupUniqueCell(colorOffset) {
   var cells = document.getElementsByClassName("cell"),
-      index = Math.floor(Math.random() * cells.length),
+      index = random(cells.length),
       color = cells[index].style.backgroundColor;
 
   function parsePrimaryColor(rgb) {
     var startIndex = rgb.indexOf('(') + 1,
         endIndex   = rgb.indexOf(')');
-    var colorList  = rgb.substring(startIndex, endIndex);
-
-    return colorList.split(',').map(function(value) {
+    var rgbValues  = rgb.substring(startIndex, endIndex);
+    return rgbValues.split(',').map(function(value) {
       return parseInt(value);
     });
   }
@@ -117,6 +126,7 @@ function setupUniqueCell(colorOffset) {
   rgb[2] = Math.floor(rgb[2] + colorOffset);
   randomColor = getRGB(rgb[0], rgb[1], rgb[2]);
   
+  // Sets new color and event listener for the random cell
   cells[index].style.backgroundColor = randomColor;
   cells[index].addEventListener("click", function() {
     setupGameplay();
@@ -128,12 +138,13 @@ function setupGameplay() {
   var colorOffset = generateColorDifference();
 
   setupGrid();
-  setupColor(colorOffset);
+  setupCellColor(colorOffset);
   setupUniqueCell(colorOffset);
 }
 
 function setupEntrance() {
-  document.getElementById("play-button").addEventListener("click", function() {
+  var playButton = document.getElementById("play-button");
+  playButton.addEventListener("click", function() {
     var entrance = document.getElementById("entrance");
     entrance.className += " hidden";
     setupTimeCounter();
@@ -145,20 +156,34 @@ function main() {
   setupGameplay();
 }
 
-/* -----------------------------
- * Time counter running parallel
- * -----------------------------
+/* --------------------------------
+ * Time counter running in parallel
+ * --------------------------------
  */
-function displayScore() {
+function showScoreboard() {
+
+  function resetConfig() {
+    config.time  = 60;
+    config.score = 0;
+  }
+
   document.getElementById("scoreboard").className = "";
   document.getElementById("final-score").innerHTML = "Score: " + config.score;
+  document.getElementById("score").innerHTML = "0";
+  document.getElementById("replay-button").addEventListener("click", function() {
+    scoreboard.className = "hidden";
+
+    resetConfig();
+    setupGameplay();
+    setupTimeCounter();
+  });
 }
 
 function setupTimeCounter() {
   setTimeout(function() {
     config.time = config.time - 1;
     if (config.time === 0) {
-      displayScore();
+      showScoreboard();
       return;
     }
     document.getElementById("time").innerHTML = config.time;
