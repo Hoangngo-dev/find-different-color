@@ -11,19 +11,21 @@
       <h1>Different color</h1>
       <p>Can you see the difference?</p>
     </article>
-    <button id="play-button">Start</button>
+    <button class="button" id="play-button">Start</button>
   </div>
-  <div id="scoreboard">
-    <p>Score: <span id="score">0</span></p>
-    <button>Replay</button>
+  <div id="scoreboard" class="hidden">
+    <article>
+      <p id="final-score">Score: 0</p>
+      <button class="button" id="replay-button">Replay</button>
+    </article>
   </div>
   <div id="gameplay"></div>
   <div class="sidebar">
     <div class="game-info-wrapper">
-      <p class="game-info">0</p>
+      <p id="score" class="game-info">0</p>
     </div>
     <div class="game-info-wrapper">
-      <p>Time: <span id="time" class="game-info">60</span></p>
+      <p>Time: <span id="time" class="game-info"></span></p>
     </div>
   </div>
   <script src="main.js"></script>
