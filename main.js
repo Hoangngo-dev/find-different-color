@@ -8,6 +8,10 @@ var config = {
   difficulty: [1, 2, 3, 4, 5, 6, 7]
 };
 
+/* -------------------------
+ * Score manipulation method
+ * -------------------------
+ */
 function setScore(score) {
   config.score = score;
   document.getElementById("score").innerHTML = score;
@@ -18,6 +22,11 @@ function incrementScore() {
   setScore(config.score);
 }
 
+
+/* ----------------------------
+ * Color manipulation functions
+ * ----------------------------
+ */
 function generateColorDifference() {
   var levelOfDifficulty = Math.floor(Math.random() * config.difficulty.length);
   return COLOR_DIFFERENCE / config.difficulty[levelOfDifficulty];
@@ -27,6 +36,11 @@ function getRGB(red, green, blue) {
   return 'rgb(' + [red, green, blue].join(',') + ')';
 }
 
+
+/* ------------------------
+ * DOM manipulation methods
+ * ------------------------
+ */
 function removeAllChildren(elementId) {
   while (true) {
     var element = document.getElementById(elementId);
@@ -123,7 +137,24 @@ function setupEntrance() {
   document.getElementById("play-button").addEventListener("click", function() {
     var entrance = document.getElementById("entrance");
     entrance.className += " hidden";
+    setupTimeCounter();
   });
+}
+
+function displayScore() {
+  
+}
+
+function setupTimeCounter() {
+  setTimeout(function() {
+    config.time = config.time - 1;
+    if (config.time === 0) {
+      displayScore();
+      return;
+    }
+    document.getElementById("time").innerHTML = config.time;
+    setupTimeCounter();
+  }, 1000)
 }
 
 function main() {
