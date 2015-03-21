@@ -8,6 +8,20 @@ var config = {
   difficulty: [1, 2, 3, 4, 5, 6, 7]
 };
 
+var values = {
+  rowClass: "row",
+  cellClass: "cell",
+  scoreId: "score",
+  gameplayId: "gameplay",
+  entranceId: "entrance",
+  playButtonId: "play-button",
+  scoreboardId: "scoreboard",
+  finalScoreId: "final-score",
+  hiddenClass: "hidden",
+  replayButtonId: "replay-button",
+  scoreLabel: "Score: ",
+}
+
 /* ---------------
  * Utility methods
  * ---------------
@@ -23,7 +37,7 @@ function random(number) {
  */
 function setScore(score) {
   config.score = score;
-  document.getElementById("score").innerHTML = score;
+  document.getElementById(values.scoreId).innerHTML = score;
 }
 
 function incrementScore() {
@@ -78,16 +92,16 @@ function setupGrid() {
     }
   }
 
-  removeAllChildren("gameplay");
+  removeAllChildren(values.gameplayId);
 
   // Adds rows
   for (var i = 0; i < GAMEPLAY_HEIGHT; i++) {
-    createElementWithParentId("gameplay", "div", "row");
+    createElementWithParentId(values.gameplayId, "div", values.rowClass);
   }
 
   // Adds cells
   for (var i = 0; i < GAMEPLAY_WIDTH; i++) {
-    createElementWithParentClass("row", "div", "cell");
+    createElementWithParentClass(values.rowClass, "div", values.cellClass);
   }
 }
 
@@ -106,7 +120,7 @@ function setupCellColor(colorOffset) {
 }
 
 function setupUniqueCell(colorOffset) {
-  var cells = document.getElementsByClassName("cell"),
+  var cells = document.getElementsByClassName(values.cellClass),
       index = random(cells.length),
       color = cells[index].style.backgroundColor;
 
@@ -143,9 +157,9 @@ function setupGameplay() {
 }
 
 function setupEntrance() {
-  var playButton = document.getElementById("play-button");
+  var playButton = document.getElementById(values.playButtonId);
   playButton.addEventListener("click", function() {
-    var entrance = document.getElementById("entrance");
+    var entrance = document.getElementById(values.entranceId);
     entrance.className += " hidden";
     setupTimeCounter();
   });
@@ -167,11 +181,11 @@ function showScoreboard() {
     config.score = 0;
   }
 
-  document.getElementById("scoreboard").className = "";
-  document.getElementById("final-score").innerHTML = "Score: " + config.score;
-  document.getElementById("score").innerHTML = "0";
-  document.getElementById("replay-button").addEventListener("click", function() {
-    scoreboard.className = "hidden";
+  document.getElementById(values.scoreboardId).className = "";
+  document.getElementById(values.finalScoreId).innerHTML = values.scoreLabel + config.score;
+  document.getElementById(values.scoreId).innerHTML = "0";
+  document.getElementById(values.replayButtonId).addEventListener("click", function() {
+    scoreboard.className = values.hiddenClass;
 
     resetConfig();
     setupGameplay();
