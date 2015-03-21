@@ -36,7 +36,6 @@ function getRGB(red, green, blue) {
   return 'rgb(' + [red, green, blue].join(',') + ')';
 }
 
-
 /* ------------------------
  * DOM manipulation methods
  * ------------------------
@@ -141,8 +140,18 @@ function setupEntrance() {
   });
 }
 
+function main() {
+  setupEntrance();
+  setupGameplay();
+}
+
+/* -----------------------------
+ * Time counter running parallel
+ * -----------------------------
+ */
 function displayScore() {
-  
+  document.getElementById("scoreboard").className = "";
+  document.getElementById("final-score").innerHTML = "Score: " + config.score;
 }
 
 function setupTimeCounter() {
@@ -154,12 +163,7 @@ function setupTimeCounter() {
     }
     document.getElementById("time").innerHTML = config.time;
     setupTimeCounter();
-  }, 1000)
-}
-
-function main() {
-  setupEntrance();
-  setupGameplay();
+  }, 1000);
 }
 
 main();
