@@ -202,6 +202,11 @@ body
   text-align: center;
 }
 
+#final-score
+{
+  font-size: 2em;
+}
+
 /* utilities */
 .hidden
 {
