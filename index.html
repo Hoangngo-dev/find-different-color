@@ -6,7 +6,28 @@
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+  <div id="entrance">
+    <article>
+      <h1>Different color</h1>
+      <p>Can you see the difference?</p>
+    </article>
+    <button class="button" id="play-button">Start</button>
+  </div>
+  <div id="scoreboard" class="hidden">
+    <article>
+      <p id="final-score">Score: 0</p>
+      <button class="button" id="replay-button">Replay</button>
+    </article>
+  </div>
   <div id="gameplay"></div>
+  <div class="sidebar">
+    <div class="game-info-wrapper">
+      <p id="score" class="game-info">0</p>
+    </div>
+    <div class="game-info-wrapper">
+      <p>Time: <span id="time" class="game-info"></span></p>
+    </div>
+  </div>
   <script src="main.js"></script>
 </body>
 </html>
