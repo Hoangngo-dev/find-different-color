@@ -139,8 +139,8 @@ body
   float: left;
 }
 
-/* score */
-#score-box
+/* container */
+.game-info-wrapper
 {
   width:   90%;
   height:  10%;
@@ -156,7 +156,8 @@ body
   background-color: #FFF;
 }
 
-#score
+/* score */
+.game-info
 {
   padding: 7% 0;
   font-size: 2em;
