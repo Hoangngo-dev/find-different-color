@@ -1,9 +1,10 @@
 var GAMEPLAY_WIDTH   = 10,
     GAMEPLAY_HEIGHT  = 10,
-    COLOR_DIFFERENCE = 100;
+    COLOR_DIFFERENCE = 100,
+    GAME_TOTAL_TIME  = 60;
 
 var config = {
-  time: 60,
+  time: GAME_TOTAL_TIME,
   score: 0,
   difficulty: [1, 2, 3, 4, 5, 6, 7]
 };
@@ -11,6 +12,7 @@ var config = {
 var values = {
   rowClass: "row",
   cellClass: "cell",
+  timeId: "time",
   scoreId: "score",
   gameplayId: "gameplay",
   entranceId: "entrance",
@@ -22,6 +24,9 @@ var values = {
   scoreLabel: "Score: ",
 }
 
+var timeCounter = null;
+
+
 /* ---------------
  * Utility methods
  * ---------------
@@ -29,7 +34,6 @@ var values = {
 function random(number) {
   return Math.floor(Math.random() * number);
 }
-
 
 /* --------------------------
  * Score manipulation methods
@@ -189,18 +193,17 @@ function showScoreboard() {
 
     resetConfig();
     setupGameplay();
-    setupTimeCounter();
   });
 }
 
 function setupTimeCounter() {
-  setTimeout(function() {
+  timeCounter = setTimeout(function() {
     config.time = config.time - 1;
     if (config.time === 0) {
       showScoreboard();
-      return;
+      clearTimeout(timeCounter);
     }
-    document.getElementById("time").innerHTML = config.time;
+    document.getElementById(values.timeId).innerHTML = config.time;
     setupTimeCounter();
   }, 1000);
 }
