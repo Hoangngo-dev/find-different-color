@@ -94,6 +94,7 @@ body
 #entrance article * 
 {
   color: #FFF;
+  margin: 1% 0;
 }
 
 #entrance h1
@@ -157,15 +158,14 @@ body
 .game-info-wrapper
 {
   width:   90%;
-  height:  10%;
   padding: 0;
-  margin:  1% auto;
+  margin:  3% auto;
 
   /* Rounds all corners */
-  -moz-border-radius: 3%;
+  -moz-border-radius:    3%;
   -webkit-border-radius: 3%;
-  border-radius: 3%;
-  -khtml-border-radius: 3%;
+  border-radius:         3%;
+  -khtml-border-radius:  3%;
 
   background-color: #FFF;
 }
@@ -173,10 +173,13 @@ body
 /* score */
 .game-info
 {
-  padding: 7% 0;
   font-size: 2em;
   text-align: center;
-  vertical-align: middle;
+}
+
+.game-info span
+{
+  display: block;
 }
 
 /* score board */
@@ -200,6 +203,11 @@ body
 {
   margin-top: 12.5%;
   text-align: center;
+}
+
+#final-score
+{
+  font-size: 2em;
 }
 
 /* utilities */
